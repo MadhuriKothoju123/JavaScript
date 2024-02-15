@@ -2,7 +2,8 @@
 console.log("classes");
 
 class Expense {
-  constructor(title, amount, category, date) {
+  constructor(id, title, amount, category, date) {
+    this.id = id;
     this.title = title;
     this.amount = parseFloat(amount);
     this.category = category;
@@ -22,8 +23,8 @@ class Expense {
 
 // Recurring Expense Class
 class RecurringExpense extends Expense {
-  constructor(title, amount, category, date, frequency) {
-    super(title, amount, category, date);
+  constructor(id, title, amount, category, date, frequency) {
+    super(id, title, amount, category, date);
     this.frequency = frequency;
   }
 

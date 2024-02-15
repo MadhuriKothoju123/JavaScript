@@ -1,117 +1,120 @@
 import { Expense, RecurringExpense } from "./expenseClass.js";
 
-// Closure for Expense Manager
-console.log("manager");
+const API_URL = "http://localhost:5000"; // Change as per your backend
+const expensesCache = new Map(); // Store fetched expenses
 
-const createExpenseManager = () => {
-  let expenses = [];
-  let income;
+/**
+ * Get expenses batch-wise with optional search and filter.
+ */
+async function* getExpenses(batchSize = 10, month , year, query ) {
+  let offset = 0;
 
-  const API_URL = "http://localhost:5000";
-  return {
-    setMonthlyIncome() {
-      income = 25000;
-    },
-    setYearlyIncome() {
-     income= 25000 * 12;
-    },
-    getIncome() {
-      return income;
-    },
-    async addExpense(expense) {
-      console.log(expense, "expense");
+  while (true) {
+    try {
+      // Build API URL with filters and search query
+      let url = `${API_URL}/expenses?limit=${batchSize}&offset=${offset}`;
+      if (month) url += `&month=${month}`;
+      if (year) url += `&year=${year}`;
+      if (query) url += `&query=${encodeURIComponent(query)}`;
 
-      await fetch(`${API_URL}/expenses`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(expense),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json(); // Parse JSON response
-        })
-        .then((data) => {
-          console.log("Response data:", data); // Log the actual response
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    },
-    async getExpenses() {
-      const response = await fetch(`${API_URL}/expenses`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      const response = await fetch(url);
+      console.log(response, "res");
+      
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      const data = await response.json(); // Resolve the JSON promise
-      console.log(data, "data");
+      const jsonResponse = await response.json();
+      const data = jsonResponse.data || [];
+console.log(data, "data")
+      if (!data.length) return; // Stop fetching if no more data
 
-      expenses = data.map((e) => {
-        if (e.frequency) {
-          return new RecurringExpense(
-            e.title,
-            e.amount,
-            e.category,
-            e.date,
-            e.frequency
-          );
-        } else {
-          return new Expense(e.title, e.amount, e.category, e.date);
-        }
-      });
-    },
-    filterExpenses(start, end) {
-      const filteredExpenses = expenses.filter((expense) => {
-        const expenseDate = new Date(expense.date);
-        return expenseDate >= start && expenseDate <= end;
-      });
-      return filteredExpenses;
-    },
-    async getMonthlyExpenses(month, year) {
-      return expenses?.filter((expense) => {
-        const expenseDate = new Date(expense.date);
-        return (
-          expenseDate.getMonth() + 1 === month &&
-          expenseDate.getFullYear() === year
-        );
-      });
-    },
+      // Convert response data to Expense instances
+      const newExpenses = data.map((e) =>
+        e.frequency
+          ? new RecurringExpense(e.id, e.title, e.amount, e.category, e.date, e.frequency)
+          : new Expense(e.id, e.title, e.amount, e.category, e.date)
+      );
 
-    // Get yearly expenses for a specific year
-    async getYearlyExpenses(year) {
-      return expenses?.filter((expense) => {
-        const expenseDate = new Date(expense.date);
-        return expenseDate.getFullYear() === year;
-      });
-    },
-    async getFilteredExpenses(month = null, year = null, frequency=null) {
-      const currentDate = new Date();
-      const currentMonth = currentDate.getMonth() + 1; // Months are 0-based
-      const currentYear = currentDate.getFullYear();
+      // Store in cache
+      newExpenses.forEach((exp) => expensesCache.set(exp.id, exp));
 
-      if (month && year) {
-        this.setMonthlyIncome();
-        return this.getMonthlyExpenses(month, year);
-      } else if (year) {
-        // Only year is provided
-        this.setYearlyIncome();
-        return this.getYearlyExpenses(year);
-      } else if (month) {
-        // Only month is provided
-        this.setMonthlyIncome();
-        return this.getMonthlyExpenses(month, currentYear);
-      } else {
-        this.setMonthlyIncome();
+      yield newExpenses;
 
-        return this.getMonthlyExpenses(currentMonth, currentYear);
-      }
-    },
-    calculateTotalExpenses(expenseData) {
-      return expenseData.reduce((total, expense) => total + expense.amount, 0);
-    },
-  };
-};
+      offset += batchSize; // Move to next batch
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+      return;
+    }
+  }
+}
+
+/**
+ * Fetch expenses based on search query, month, and year filters.
+ */
+async function* getFilteredExpenses(month = null, year = null, query = null, batchSize = 10) {
+  yield* getExpenses(batchSize, month, year, query);
+}
+
+/**
+ * Add a new expense.
+ */
+async function addExpense(expense) {
+  try {
+    const response = await fetch(`${API_URL}/expenses`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(expense),
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+    const data = await response.json();
+    console.log("Added Expense:", data);
+
+    expensesCache.set(data.id, data); // Cache new expense
+  } catch (error) {
+    console.error("Error adding expense:", error);
+  }
+}
+
+/**
+ * Delete an expense.
+ */
+async function deleteExpense(id) {
+  try {
+    expensesCache.delete(id); // Remove from cache
+
+    const response = await fetch(`${API_URL}/expenses/${id}`, { method: "DELETE" });
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+    console.log(`Expense with ID ${id} deleted.`);
+  } catch (error) {
+    console.error("Error deleting expense:", error);
+  }
+}
+
+/**
+ * Calculate total expenses.
+ */
+function calculateTotalExpenses(expenseData) {
+  return expenseData.reduce((total, { amount }) => total + amount, 0);
+}
+
+/**
+ * Get user's monthly income.
+ */
+async function getIncome() {
+  // Dummy function, replace with actual API call if needed
+  return 25000;
+}
+
+// Export all functions
+const createExpenseManager = () => ({
+  getExpenses,
+  getFilteredExpenses,
+  addExpense,
+  deleteExpense,
+  calculateTotalExpenses,
+  getIncome,
+});
 
 export default createExpenseManager;

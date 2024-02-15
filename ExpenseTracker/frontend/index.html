@@ -6,6 +6,7 @@
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="./css/styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer type="module" src="./js/main.js"></script>
   </head>
   <body>
     <h1>Expense Tracker</h1>
@@ -30,12 +31,9 @@
         <option value="education">Education</option>
         <option value="other">Other</option>
       </select>
-
       <input type="date" placeholder="date" id="expense-date" required />
-
       <select title="occurence" id="expense-type">
-        <option value="" selected disabled>Select occurence</option>
-
+        <option value="" selected disabled>Select occurrence</option>
         <option value="one-time">One-Time</option>
         <option value="recurring">Recurring</option>
       </select>
@@ -52,56 +50,81 @@
       <button type="submit">Add Expense</button>
     </form>
 
+    <!-- Expense Filter -->
     <div>
-      <div>
-        <label for="month">Select Month:</label>
-        <select id="month-select">
-          <option value="" selected disabled>Select month</option>
-        <option value=null>none</option>
-          <option value="1">January</option>
-          <option value="2">February</option>
-          <option value="3">March</option>
-          <option value="4">April</option>
-          <option value="5">May</option>
-          <option value="6">June</option>
-          <option value="7">July</option>
-          <option value="8">August</option>
-          <option value="9">September</option>
-          <option value="10">October</option>
-          <option value="11">November</option>
-          <option value="12">December</option>
-        </select>
+      <label for="month">Select Month:</label>
+      <select id="month-select">
+        <option value="" selected disabled>Select month</option>
+        <option value="null">None</option>
+        <option value="1">January</option>
+        <option value="2">February</option>
+        <option value="3">March</option>
+        <option value="4">April</option>
+        <option value="5">May</option>
+        <option value="6">June</option>
+        <option value="7">July</option>
+        <option value="8">August</option>
+        <option value="9">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+      </select>
 
-        <label for="year">Select Year:<label>
-        <select id="year-select">
-          <option value="" selected disabled>Select year</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-        </select>
+      <label for="year">Select Year:</label>
+      <select id="year-select">
+        <option value="" selected disabled>Select year</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+      </select>
 
-        <button id="filterExpenses">Filter Expenses</button>
-        <button id="clearFilter">clear Filter</button>
-      </div>
+      <button id="filterExpenses">Filter Expenses</button>
+      <button id="clearFilter">Clear Filter</button>
     </div>
-
-    <div style="display: flex">
+    <div style="display: flex;">
       <div id="expense-list">
-        <h2>Expenses</h2>
-        <table id="filtered-expenses-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Amount</th>
-              <th>Category</th>
-              <th>Date</th>
-              <th>Frequency</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dynamic content for filtered expenses will go here -->
-          </tbody>
-        </table>
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <h2>Expenses</h2>
+          <div>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search expenses..."
+            />
+          </div>
+        </div>
+        <div class="table-container">
+          <table id="filtered-expenses-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Frequency</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dynamic content for filtered expenses will go here -->
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      <!-- Expense Template -->
+      <template id="expense-template">
+        <tr>
+          <td class="title"></td>
+          <td class="amount"></td>
+          <td class="category"></td>
+          <td class="date"></td>
+          <td class="frequency"></td>
+          <td><button class="delete-btn">Delete</button></td>
+        </tr>
+      </template>
+
+      <!-- Pie Chart for Expenses -->
       <div style="width: 400px; height: 400px">
         <canvas
           id="expensesSavingsIncomePieChart"
@@ -110,8 +133,8 @@
         ></canvas>
       </div>
     </div>
-    <script></script>
 
+    <!-- JavaScript Imports -->
     <script type="module" src="./js/expenseClass.js"></script>
     <script type="module" src="./js/expenseManager.js"></script>
     <script type="module" src="./js/app.js"></script>
