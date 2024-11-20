@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <header>
+
+    </header>
+    <body>
+<button id="myButton">this binding</button>
+<button id="myButton2">arrow binding</button>
+
+    </body>
+</html>
+<script>
+
+// Traditional function syntax
+const add1 = function(a, b) {
+    return a + b;
+};
+var name= "madhuri"
+console.log("Hello")
+// Arrow function syntax
+const add = (a, b) => a + b;
+// Here, this.name inside the forEach callback refers to the global
+//  object (or undefined in strict mode) because this within the callback is not bound to user.
+const user = {
+    name: "Alice",
+    hobbies: ["reading", "traveling"],
+    showHobbies: function() {
+        this.hobbies.forEach(function(hobby) {
+            console.log(this.name, "this.name")
+            console.log(`${this.name} likes ${hobby}`);
+        }.bind(this));
+    }
+};
+const user2 = {
+        name: "Alice",
+        hobbies: ["reading", "traveling"],
+        showHobbies: function() {
+            this.hobbies.forEach((hobby) => {
+                console.log(`${this.name} likes ${hobby}`);
+            });
+        }
+    };
+
+function greet(name = 'Guest') {
+    console.log("Hello, " + name + "!");
+}
+
+greet(); // Output: "Hello, Guest!"
+greet('Bob'); // Output: "Hello, Bob!"
+
+let coords = getCoordinates();
+console.log(coords.x, coords.y);
+function getCoordinates() {
+    return { x: 10, y: 20 };
+}
+
+
+console.log(sayHello("Charlie"));
+const sayHello = function(name) {
+    return "Hello, " + name + "!";
+};
+
+console.log(sayHello("Charlie")); // Output: "Hello, Charlie!"
+
+
+// apply() is useful when you have a list of arguments stored in an array and
+//  need to pass them as individual arguments to a function that doesn't natively accept an array (like Math.max() or Math.min()).
+// Passing parameter with the apply method: We can also pass parameters with apply function.
+
+// const obj1 = { 
+//         firstName: "First_name", 
+//         lastName: "Last_name"
+//     }; 
+//     const obj2 = { 
+//         firstName: "Sachin", 
+//         lastName: "Tendulkar"
+//     }; 
+//     function printName() { 
+//         console.log(this.firstName + " " + this.lastName); 
+//     } 
+//     printName.apply(obj2); 
+
+    const obj1 = { 
+        firstName: "First_name", 
+        lastName: "Last_name"
+    }; 
+    const obj2 = { 
+        firstName: "Sachin", 
+        lastName: "Tendulkar"
+    }; 
+    function printName(profession, country) { 
+        console.log(this.firstName + " "
+            + this.lastName + " " + 
+            profession + " " + country); 
+    } 
+    printName.apply(obj2, ["Cricketer", "India"]); 
+
+
+    const users = [
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 17 },
+  { name: "Charlie", age: 19 },
+  { name: "Dave", age: 16 }
+];
+//  array methods chaining
+
+// Readable and Declarative: The code clearly expresses the transformation steps.
+// Avoids Temporary Variables: Each step is directly passed to the next method, reducing clutter.
+// Functional Programming Style: Encourages immutability and avoids side effects.
+// Debugging: When chaining becomes too long or complex, it might be harder to debug.
+const result = users
+  .filter(user => user.age > 18)            // Keep users older than 18
+  .map(user => user.name.toUpperCase())    // Get names in uppercase
+  .sort();                                 // Sort names alphabetically
+
+console.log(result); // Output: ["ALICE", "CHARLIE"]
+
+
+user.showHobbies(); 
+user2.showHobbies();
+document.getElementById("myButton").addEventListener("click", user.showHobbies.bind(user));
+document.getElementById("myButton2").addEventListener("click", ()=>user2.showHobbies());
+
+</script>
