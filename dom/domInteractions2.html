@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DOM Properties and Methods Example</title>
+    <style>
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="title">Welcome to the DOM Manipulation Example</h1>
+    <p class="description">This is the first paragraph.</p>
+    <p class="description">This is the second paragraph.</p>
+    <p class="description">This is the third paragraph.</p>
+    <div id="container">
+        <div class="item">Item 1</div>
+        <div class="item">Item 2</div>
+        <div class="item">Item 3</div>
+    </div>
+    <button id="changeTitle">Change Title</button>
+    <button id="highlightItems">Highlight Items</button>
+    <button id="addNewItem">Add New Item</button>
+    <button id="removeFirstItem">Remove First Item</button>
+    <button id="insertBeforeSecond">Insert Item Before Second</button>
+
+    <script>
+        // 1. Get and update the title using `getElementById`
+        const title = document.getElementById('title');
+        console.log(title.textContent); // Output: Welcome to the DOM Manipulation Example
+
+        // Change title text on button click
+        document.getElementById('changeTitle').addEventListener('click', () => {
+            title.textContent = 'Title Changed!';
+        });
+
+        // 2. Access elements by tag name using `getElementsByTagName`
+        const paragraphs = document.getElementsByTagName('p');
+        console.log(paragraphs.length); // Output: 3
+
+        // Loop through paragraphs and log their text content
+        for (let paragraph of paragraphs) {
+            console.log(paragraph.textContent);
+        }
+
+        // 3. Access elements by class name using `getElementsByClassName`
+        const descriptions = document.getElementsByClassName('description');
+        for (let description of descriptions) {
+            console.log(description.textContent);
+        }
+
+        // 4. Use `querySelector` and `querySelectorAll`
+        const firstItem = document.querySelector('.item'); // Gets the first item
+        console.log(firstItem.textContent); // Output: Item 1
+
+        const allItems = document.querySelectorAll('.item'); // Gets all items
+        allItems.forEach(item => {
+            console.log(item.textContent);
+        });
+
+        // Highlight all items on button click
+        document.getElementById('highlightItems').addEventListener('click', () => {
+            allItems.forEach(item => item.classList.add('highlight'));
+        });
+
+        // 5. Create a new element and append it to the container using `createElement` and `appendChild`
+        const container = document.getElementById('container');
+        document.getElementById('addNewItem').addEventListener('click', () => {
+            const newItem = document.createElement('div');
+            newItem.textContent = `Item ${allItems.length + 1}`;
+            newItem.className = 'item';
+            container.appendChild(newItem); // Append new item
+        });
+
+        // 6. Remove a child element using `removeChild`
+        document.getElementById('removeFirstItem').addEventListener('click', () => {
+            if (container.firstElementChild) {
+                container.removeChild(container.firstElementChild);
+            } else {
+                alert('No items left to remove.');
+            }
+        });
+
+        // 7. Insert a new element before another element using `insertBefore`
+        document.getElementById('insertBeforeSecond').addEventListener('click', () => {
+            const newItem = document.createElement('div');
+            newItem.textContent = 'Inserted Item';
+            newItem.className = 'item';
+
+            const secondItem = container.children[1]; // Second item in the container
+            if (secondItem) {
+                container.insertBefore(newItem, secondItem);
+            } else {
+                alert('Second item not found.');
+            }
+        });
+
+        // 8. Modify inline styles using `style` property
+        title.style.color = 'blue';
+        title.style.fontSize = '2em';
+
+        // 9. Manipulate classes using `className` and `classList`
+        title.className = 'title-class'; // Set class directly
+        console.log(title.className); // Output: title-class
+
+        title.classList.add('highlight'); // Add a new class
+        console.log(title.className); // Output: title-class highlight
+    </script>
+</body>
+</html>

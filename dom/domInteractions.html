@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DOM Manipulation</title>
+</head>
+<body>
+  <div id="main">
+    <h1 class="title">Welcome!</h1>
+    <p>Paragraph 1</p>
+  </div>
+
+  <h1 id="heading">Hello, World!</h1>
+  <h1 id="heading">Hell0!</h1>
+
+ <button id="changeTextButton">Change Text</button>
+ <h1>Title 1</h1>
+ <h1>Title 2</h1>
+ <p>Paragraph</p>
+  <script>
+    // Access nodes
+    const main = document.getElementById("main");
+    console.log(main.childNodes); // Returns all child nodes
+
+    // Add a new paragraph
+    const newPara = document.createElement("p");
+    newPara.textContent = "Paragraph 2";
+    main.appendChild(newPara);
+
+    // Remove the first paragraph
+    const firstPara = main.querySelector("p");
+    main.removeChild(firstPara);
+
+    // Insert a new element before an existing one
+    const newHeader = document.createElement("h2");
+    newHeader.textContent = "Subheading";
+    main.insertBefore(newHeader, main.firstChild);
+
+    // Access and modify DOM properties
+    const title = document.querySelector(".title");
+    title.textContent = "Updated Title";
+    title.style.color = "blue";
+
+    const heading = document.getElementById('heading');
+    const button = document.getElementById('changeTextButton');
+    console.log(heading, "heading" );
+
+// Add a click event listener to the button
+button.addEventListener('click', () => {
+    // Change the text content of the heading
+    heading.textContent = 'Text has been changed!';
+});
+    
+        // Get all <h1> elements
+        const headings = document.getElementsByTagName('h1');
+        console.log(headings, "headings")
+
+        // Iterate through the collection
+        for (let heading of headings) {
+            heading.style.color = 'blue'; // Change color to blue
+        }
+  </script>
+</body>
+</html>

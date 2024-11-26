@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag-and-Drop Task Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: space-around;
+      margin: 20px;
+    }
+    .list {
+      width: 200px;
+      min-height: 200px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #f9f9f9;
+    }
+    .task {
+      padding: 10px;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: white;
+      border-radius: 3px;
+      cursor: move;
+    }
+    .over {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+<div class="list" id="todoList" ondrop="drop(event)" ondragover="dragOver(event)">
+  <h3>To-Do List</h3>
+  <div class="task" draggable="true" id="task1" ondragstart="dragStart(event)">Task 1</div>
+  <div class="task" draggable="true" id="task2" ondragstart="dragStart(event)">Task 2</div>
+  <div class="task" draggable="true" id="task3" ondragstart="dragStart(event)">Task 3</div>
+</div>
+
+<div class="list" id="doneList" ondrop="drop(event)" ondragover="dragOver(event)">
+  <h3>Done List</h3>
+</div>
+
+<script>
+  // Dragging events
+
+  // When dragging starts, we store the id of the task being dragged
+  function dragStart(event) {
+      console.log(  event.target.id)
+    console.log(  event.dataTransfer)
+    event.dataTransfer.setData("text", event.target.id);
+    event.target.style.opacity = "0.4"; // Make the dragged item semi-transparent
+  }
+
+  // When dragging over a list, allow the drop
+  function dragOver(event) {
+    event.preventDefault();
+    console.log("dragging over a list,")
+    // event.target.classList.add('over'); // Highlight the target list
+  }
+
+
+  // When the item is dropped, move it to the new list
+  function drop(event) {
+    console.log("drop")
+    event.preventDefault();
+    const taskId = event.dataTransfer.getData("text"); // Get the task id
+    const task = document.getElementById(taskId); // Get the task element
+
+    // Append the task to the new list and reset styles
+    event.target.classList.remove('over');
+    if (event.target.classList.contains('list')) {
+      event.target.appendChild(task);
+    }
+
+    // Reset the opacity of the dragged item
+    task.style.opacity = "1";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Handling Demo</title>
+    <style>
+        #parent {
+            padding: 20px;
+            background-color: lightblue;
+        }
+        .button {
+            margin: 10px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Inline Event Handler -->
+    <button onclick="alert('Inline handler: Button clicked!')" class="button">Inline Button</button>
+
+    <!-- DOM Property Event Handler -->
+    <button id="domPropButton" class="button">DOM Property Button</button>
+
+    <!-- Event Listener -->
+    <button id="listenerButton" class="button">Event Listener Button</button>
+
+    <!-- Event Delegation -->
+    <div id="parent">
+        Parent Element
+        <button class="child button">Child Button 1</button>
+        <button class="child button">Child Button 2</button>
+        <button class="child button">Child Button 3</button>
+    </div>
+
+    <!-- Prevent Default -->
+    <a href="https://example.com" id="preventDefaultLink">Go to Example.com</a>
+
+    <script>
+        // DOM Property Event Handler
+        const domPropButton = document.getElementById('domPropButton');
+        domPropButton.onclick = function () {
+            alert('DOM property: Button clicked!');
+        };
+
+        // Event Listener
+        const listenerButton = document.getElementById('listenerButton');
+        listenerButton.addEventListener('click', () => {
+            alert('Event Listener: Button clicked!');
+        });
+
+        // Event Delegation
+        const parent = document.getElementById('parent');
+        parent.addEventListener('click', (event) => {
+            if (event.target.classList.contains('child')) {
+                alert(`Event Delegation: ${event.target.textContent} clicked!`);
+            }
+        });
+
+        // Prevent Default
+        const preventDefaultLink = document.getElementById('preventDefaultLink');
+        preventDefaultLink.addEventListener('click', (event) => {
+            // event.preventDefault();
+            alert('Default navigation prevented!');
+        });
+
+        // Event Propagation Example
+        parent.addEventListener(
+            'click',
+            () => {
+                console.log('Parent clicked (Propagation Example)');
+            },
+            true // Use capturing phase
+        );
+
+        // Event Bubbling with stopPropagation
+        parent.querySelector('.child').addEventListener('click', (event) => {
+            alert('Bubbling: Child clicked!');
+            event.stopPropagation(); // Prevent event bubbling
+        });
+    </script>
+</body>
+</html>

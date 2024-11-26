@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clipboard Events Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .message {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Clipboard Events Example</h1>
+<p>Try copying, cutting, or pasting text in the text area below to see the events in action:</p>
+
+<textarea id="textArea" placeholder="Type or paste something here..."></textarea>
+<p class="message" id="message"></p>
+
+<script>
+  const textArea = document.getElementById("textArea");
+  const message = document.getElementById("message");
+
+  // Copy Event
+  textArea.addEventListener("copy", () => {
+    message.textContent = "Content copied to clipboard!";
+    message.style.color = "green";
+  });
+
+  // Cut Event
+  textArea.addEventListener("cut", () => {
+    message.textContent = "Content cut to clipboard!";
+    message.style.color = "orange";
+  });
+
+  // Paste Event
+  textArea.addEventListener("paste", () => {
+    message.textContent = "Content pasted from clipboard!";
+    message.style.color = "blue";
+  });
+
+  // Clear message after a delay
+  textArea.addEventListener("input", () => {
+    setTimeout(() => {
+      message.textContent = "";
+    }, 2000);
+  });
+</script>
+
+</body>
+</html>

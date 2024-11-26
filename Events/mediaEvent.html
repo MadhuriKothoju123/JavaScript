@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Events Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    .player-container {
+      border: 2px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
+      background: #f9f9f9;
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button.play {
+      background-color: #28a745;
+      color: white;
+    }
+    button.pause {
+      background-color: #dc3545;
+      color: white;
+    }
+    .progress {
+      margin: 10px 0;
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background-color: #007bff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="player-container">
+  <h2>Audio Player</h2>
+  <audio id="audioPlayer" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  <div>
+    <button class="play" onclick="playAudio()">Play</button>
+    <button class="pause" onclick="pauseAudio()">Pause</button>
+  </div>
+  <div class="progress">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  <p id="status">Status: Stopped</p>
+  <label for="volume">Volume:</label>
+  <input id="volume" type="range" min="0" max="1" step="0.1" value="1" onchange="changeVolume(event)">
+</div>
+
+<script>
+  const audioPlayer = document.getElementById("audioPlayer");
+  const status = document.getElementById("status");
+  const progressBar = document.getElementById("progressBar");
+
+  // Play Event
+  function playAudio() {
+    audioPlayer.play();
+  }
+
+  // Pause Event
+  function pauseAudio() {
+    audioPlayer.pause();
+  }
+
+  // Triggered when the audio starts playing
+  audioPlayer.addEventListener("play", () => {
+    status.textContent = "Status: Playing";
+  });
+
+  // Triggered when the audio is paused
+  audioPlayer.addEventListener("pause", () => {
+    status.textContent = "Status: Paused";
+  });
+
+  // Triggered when the audio ends
+  audioPlayer.addEventListener("ended", () => {
+    status.textContent = "Status: Ended";
+    progressBar.style.width = "0%"; // Reset progress bar
+  });
+
+  // Update the progress bar as the audio plays
+  audioPlayer.addEventListener("timeupdate", () => {
+    const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progressBar.style.width = `${progress}%`;
+  });
+
+  // Triggered when the volume changes
+  function changeVolume(event) {
+    console.log(event.target.value)
+    audioPlayer.volume = event.target.value;
+  }
+
+  audioPlayer.addEventListener("volumechange", () => {
+    status.textContent = `Status: Volume changed to ${Math.round(audioPlayer.volume * 100)}%`;
+  });
+</script>
+
+</body>
+</html>

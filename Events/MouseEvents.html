@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mouse Events Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    .product-card {
+      width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px auto;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .product-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .product-card:hover {
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .product-title {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+    .product-price {
+      font-size: 18px;
+      color: #007bff;
+    }
+    .info {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Interactive Product Card</h1>
+
+<div class="product-card" id="productCard">
+  <img src="https://via.placeholder.com/300" alt="Product Image">
+  <div class="product-title">Awesome Gadget</div>
+  <div class="product-price">$299.99</div>
+</div>
+
+<p class="info" id="info"></p>
+
+<script>
+  const productCard = document.getElementById('productCard');
+  const info = document.getElementById('info');
+
+  // click: Add to cart simulation
+  productCard.addEventListener('click', () => {
+    info.textContent = 'Product added to cart!';
+    info.style.color = 'green';
+    setTimeout(() => info.textContent = '', 2000); // Clear message after 2 seconds
+  });
+
+  // dblclick: Show more details
+  productCard.addEventListener('dblclick', () => {
+    info.textContent = 'More details opened!';
+    info.style.color = 'blue';
+    setTimeout(() => info.textContent = '', 2000);
+  });
+
+  // mouseover: Highlight card
+  productCard.addEventListener('mouseover', () => {
+    productCard.style.border = '2px solid #007bff';
+  });
+
+  // mouseout: Remove highlight
+  productCard.addEventListener('mouseout', () => {
+    productCard.style.border = '1px solid #ddd';
+  });
+
+  // mousedown: Simulate button press
+  productCard.addEventListener('mousedown', () => {
+    productCard.style.boxShadow = 'inset 2px 2px 6px rgba(0, 0, 0, 0.2)';
+  });
+
+  // mouseup: Simulate button release
+  productCard.addEventListener('mouseup', () => {
+    productCard.style.boxShadow = '2px 2px 8px rgba(0, 0, 0, 0.1)';
+  });
+
+  // mousemove: Show coordinates
+  productCard.addEventListener('mousemove', (event) => {
+    const rect = productCard.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    info.textContent = `Mouse position - X: ${Math.round(x)}, Y: ${Math.round(y)}`;
+    info.style.color = '#555';
+  });
+</script>
+
+</body>
+</html>

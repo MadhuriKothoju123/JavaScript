@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Event Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    .cart-feedback {
+      margin-top: 20px;
+      font-size: 18px;
+      color: green;
+    }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .item button {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .item button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Custom Event: Add to Cart</h1>
+
+<div class="item">
+  <span>Item 1 - 10Rs/-</span>
+  <button class="add-to-cart" data-name="Item 1" data-price="10">Add to Cart</button>
+</div>
+
+<div class="item">
+  <span>Item 2 - 20Rs/-</span>
+  <button class="add-to-cart" data-name="Item 2" data-price="20">Add to Cart</button>
+</div>
+
+<div class="item">
+  <span>Item 3 - 30Rs/-</span>
+  <button class="add-to-cart" data-name="Item 3" data-price="30">Add to Cart</button>
+</div>
+
+<div class="cart-feedback" id="cartFeedback"></div>
+
+<script>
+  const feedbackElement = document.getElementById('cartFeedback');
+
+  // Event listener for buttons
+  document.querySelectorAll('.add-to-cart').forEach(button => {
+    button.addEventListener('click', (event) => {
+      // Extract item data from button attributes
+      const itemName = event.target.getAttribute('data-name');
+      const itemPrice = event.target.getAttribute('data-price');
+
+      // Create a custom event
+      const customEvent = new CustomEvent('itemAddedToCart', {
+        detail: {
+          name: itemName,
+          price: itemPrice,
+          timestamp: new Date(),
+        },
+      });
+
+      // Dispatch the custom event
+      document.dispatchEvent(customEvent);
+    });
+  });
+
+  // Listen for the custom event
+  document.addEventListener('itemAddedToCart', (event) => {
+    const { name, price, timestamp } = event.detail;
+
+    // Display feedback
+    feedbackElement.textContent = `${name} added to cart for ${price}Rs/- (Time: ${timestamp.toLocaleTimeString()})`;
+
+    // Clear feedback after 3 seconds
+    setTimeout(() => {
+      feedbackElement.textContent = '';
+    }, 4000);
+  });
+</script>
+
+</body>
+</html>

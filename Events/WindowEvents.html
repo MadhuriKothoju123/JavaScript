@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Window Events Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+      height: 2000px; /* Add scrollable content */
+    }
+    #dynamicButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
+    #resizeMessage {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Window Events Demo</h1>
+</header>
+
+<div class="content">
+  <p>Scroll down to see dynamic button behavior. Resize the window to adjust button size and observe a message below.</p>
+  <div id="resizeMessage">Resize the window to see dynamic changes.</div>
+</div>
+
+<!-- Dynamic Button -->
+<button id="dynamicButton">Scroll to Top</button>
+
+<script>
+  const dynamicButton = document.getElementById('dynamicButton');
+  const resizeMessage = document.getElementById('resizeMessage');
+
+  // 1. Scroll Event: Show button when scrolled beyond 300px
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      dynamicButton.style.display = 'block';
+    } else {
+      dynamicButton.style.display = 'none';
+    }
+  });
+
+  // Click event for dynamic button
+  dynamicButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+  });
+
+  // 2. Resize Event: Adjust button size and update message
+  window.addEventListener('resize', () => {
+    const width = window.innerWidth;
+
+    if (width < 600) {
+      dynamicButton.style.padding = '8px 16px';
+      dynamicButton.style.fontSize = '14px';
+      resizeMessage.textContent = 'Small screen detected. Adjusting styles.';
+    } else {
+      dynamicButton.style.padding = '10px 20px';
+      dynamicButton.style.fontSize = '16px';
+      resizeMessage.textContent = 'Wide screen detected. Styles restored.';
+    }
+  });
+
+  // Initialize styles based on current window size
+  const initResize = () => {
+    const width = window.innerWidth;
+    if (width < 600) {
+      dynamicButton.style.padding = '8px 16px';
+      dynamicButton.style.fontSize = '14px';
+    } else {
+      dynamicButton.style.padding = '10px 20px';
+      dynamicButton.style.fontSize = '16px';
+    }
+  };
+
+  // Call initialization
+  initResize();
+</script>
+
+</body>
+</html>
