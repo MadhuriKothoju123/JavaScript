@@ -119,10 +119,11 @@ const loadAllExpenses = async () => {
   renderExpenses(expenses, filteredExpensesTableBody);
   return expenses;
 };
-clearFilter.addEventListener("click", () => {
+clearFilter.addEventListener("click", async() => {
   monthSelect.value = currentMonth; // Set current month
   yearSelect.value = currentYear;
-  loadAllExpenses();
+ const expenses=await loadAllExpenses();
+ await getChart(expenses);
 });
 let pieChart;
 const getChart = async (expenses) => {
