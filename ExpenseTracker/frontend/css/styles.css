@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  input, select, button {
+    margin: 5px;
+    padding: 10px;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+  }
+  /* Table container styles */
+  #expense-list {
+    margin: 20px ;
+    max-width: 800px;
+    overflow-x: auto; /* For responsiveness */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Table styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+
+  thead {
+    background-color: #f4f4f4;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    th, td {
+      font-size: 14px;
+      padding: 8px;
+    }
+  }
+
+  
