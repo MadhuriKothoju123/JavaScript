@@ -4,7 +4,6 @@ const router = express.Router();
 router.use(express.urlencoded({ extended: true }));
 router.post('/', addExpense);
 router.get('/', getExpenses); // Get all expenses
-router.put('/:id', updateExpense); // Update expense
-router.delete('/:id', deleteExpense); // Delete expense
+router.delete('/:id', deleteExpense); // Delete expense\
 
 module.exports = router;
