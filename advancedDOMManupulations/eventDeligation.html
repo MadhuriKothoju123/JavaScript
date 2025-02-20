@@ -1,0 +1,22 @@
+<ul id="todoList"></ul>
+<input type="text" id="todoInput" placeholder="New task" />
+<button id="addTodo">Add</button>
+
+<script>
+  document.querySelector("#addTodo").addEventListener("click", function () {
+    const input = document.querySelector("#todoInput");
+    if (input.value.trim() !== "") {
+      const li = document.createElement("li");
+      li.textContent = input.value;
+      li.classList.add("task");
+      document.querySelector("#todoList").appendChild(li);
+      input.value = "";
+    }
+  });
+
+  document.querySelector("#todoList").addEventListener("click", function (event) {
+    if (event.target.matches(".task")) {
+      event.target.remove();
+    }
+  });
+</script>

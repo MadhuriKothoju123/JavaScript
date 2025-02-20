@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>classList vs. Style</title>
+    <style>
+        /* Use visibility: hidden instead of display: none when hiding elements to avoid reflow. */
+        .highlight {
+            background-color: yellow;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .active {
+            background-color: green;
+            color: white;
+        }
+        .selected {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>Using classList</h3>
+    <div id="box1" class="highlight bold">Hello, World!</div>
+    <button onclick="toggleClass()">Toggle Class</button>
+
+    <h3>Using style</h3>
+    <div id="box2" style="background-color: yellow; font-weight: bold;">Hello, World!</div>
+    <button onclick="toggleStyle()">Toggle Style</button>
+
+    <script>
+        const box1 = document.getElementById("box1");
+        const box2 = document.getElementById("box2");
+
+        function toggleClass() {
+            box1.classList.toggle("highlight");
+            box1.classList.toggle("active");
+        }
+
+        function toggleStyle() {
+            if (box2.style.backgroundColor === "yellow") {
+                box2.style.backgroundColor = "green";
+                box2.style.color = "white";
+            } else {
+                box2.style.backgroundColor = "yellow";
+                box2.style.color = "black";
+            }
+        }
+    </script>
+
+</body>
+</html>

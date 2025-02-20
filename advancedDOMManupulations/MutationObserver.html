@@ -1,0 +1,19 @@
+<div id="notifications"></div>
+<button id="addNotification">Add Notification</button>
+
+<script>
+// Uses MutationObserver to detect changes.
+
+  const observer = new MutationObserver(() => {
+    alert("New Notification Added!");
+  });
+
+  observer.observe(document.querySelector("#notifications"), { childList: true });
+
+  document.querySelector("#addNotification").addEventListener("click", function () {
+    const notification = document.createElement("div");
+    notification.textContent = "New message received!";
+    document.querySelector("#notifications").appendChild(notification);
+  });
+</script>
+

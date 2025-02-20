@@ -1,0 +1,32 @@
+
+<div id="chatBox"></div>
+<input type="text" id="messageInput" placeholder="Type a message" />
+<button id="sendButton">Send</button>
+
+<script>
+  document.querySelector("#sendButton").addEventListener("click", function () {
+//Performance Improvement: Instead of modifying innerHTML, we use document.createElement().
+    // const chatBox = document.querySelector("#chatBox");
+    // console.log("Before update:", chatBox.innerHTML); // Logs content before update
+
+    // const input = document.querySelector("#messageInput");
+    // if (input.value.trim() !== "") {
+    //   chatBox.innerHTML += `<div>${input.value}</div>`;  ///this makes unnnessary reflows and repaints
+    //   input.value = "";
+    // }
+
+    // console.log("After update:", chatBox.innerHTML); 
+    const chatBox = document.querySelector("#chatBox");
+    console.log("Before update:", chatBox.innerHTML);
+
+    const input = document.querySelector("#messageInput");
+    if (input.value.trim() !== "") {
+      const messageDiv = document.createElement("div");
+      messageDiv.textContent = input.value;
+      chatBox.appendChild(messageDiv);
+      input.value = "";
+    }
+
+    console.log("After update:", chatBox.innerHTML);
+  });
+</script>
